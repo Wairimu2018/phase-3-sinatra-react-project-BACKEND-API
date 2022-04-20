@@ -41,8 +41,35 @@ class ApplicationController < Sinatra::Base
     end
 
 
+
+
+      # LOGIN FLOW 
+      post "/login" do
+
+        # binding.pry
+
+        userToLogin = User.find_by( username: params[:username] )
+        if userToLogin
+
+
+          if (  userToLogin.password == params[:password]  )
+            return userToLogin.to_json( include: :pets ) # Finall Return Loggined User to FRONTEND
+          else
+            return { message: " Incorrect Password! >:( "}.to_json
+          end
+
+
+        else
+          return { message: " There's No one With that Username! :( "}.to_json
+        end
+
+      end
+
+
+
+
       # C[ R ]UD : [ R ]ead : GET Request : get - ONE User
-      ## Later ⏳ : Login Flow
+      ## User Show-Page/Details-Page Flow
       get "/users/:id" do
 
         # binding.pry
@@ -51,7 +78,7 @@ class ApplicationController < Sinatra::Base
 
         # binding.pry
 
-        found_user.to_json
+        found_user.to_json( include: :pets )
 
       end
 
@@ -72,7 +99,72 @@ class ApplicationController < Sinatra::Base
 
     end
 
+
+    # CR[ U ]D : [ U ]pdate : PATCH Request : for ONE User
+    patch "/users/:id" do 
+
+      # binding.pry
+
+      user_to_edit = User.find_by_id( params[:id] )
+
+      ## using .save + each attribute from  paramsHash
+      # user_to_edit.name = params[:name]
+      # user_to_edit.username = params[:username]
+      #   user_to_edit.password = params[:password]
+      # user_to_edit.image_URL = params[:image_URL]
+      # user_to_edit.location = params[:location]
+      
+      # user_to_edit.save
+
+
+      ## using .update
+      user_to_edit.update( params )
+
+      # binding.pry
+      
+
+      #### Different Return Approaches 
+
+        # updated_user = user_to_edit.to_json
+        # return updated_user.to_json
+
+        # return updated_user = user_to_edit.to_json
+
+        user_to_edit.to_json
+
+      #### Different Return Approaches 
+
+
+
+    end
+
   #### User Controller Routes
+
+
+
+
+  #### Pet Controller Routes
+
+    post "/pets" do
+
+      newPet = Pet.create(
+
+        name: params[:name],
+        user_id: params[:user_id]
+
+      )
+
+      return newPet.to_json
+
+    end
+
+
+  #### Pet Controller Routes
+
+
+
+
+
 
 
 
