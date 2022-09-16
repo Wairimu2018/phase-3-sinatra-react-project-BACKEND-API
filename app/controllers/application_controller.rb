@@ -28,9 +28,10 @@ class ApplicationController < Sinatra::Base
  end
 
 
-delete "/meal/:id" do
+delete "/meals/:id" do
 	meal = Meal.find(params[:id])
 	meal.destroy
+	meal.to_json
 	
 	end
 
@@ -43,7 +44,7 @@ delete "/meal/:id" do
 	end
 
 		
-	post "/food" do
+	post "/addfood" do
 		food = Food.create(
 			text: params[:text],
 			meal_id: params[:meal_id],
@@ -53,15 +54,18 @@ delete "/meal/:id" do
 	end
 
 	delete "/food/:id" do
-		post = Food.find(params[:id]);
-		post.destroy.to_json
+		food = Food.find(params[:id]);
+		food.destroy.to_json
 	end
 
-	patch "/food/:id" do
-		post = Food.find(params[:id])
-		post.update(
+	patch "/foods/:id" do
+		food = Food.find(params[:id])
+		food = Food.update(
 			text: params[:text]
-		)
-		post.to_json
-	end
+			)
+		food.to_json
+# 	end
+# else
+# 	{status: "error", message: "no food"}
+end
 end
