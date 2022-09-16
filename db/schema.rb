@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2022_09_15_134827) do
   end
 
   create_table "meals", force: :cascade do |t|
-    t.string "nam"
+    t.string "name"
   end
 
 end
