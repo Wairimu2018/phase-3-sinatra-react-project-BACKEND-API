@@ -1,4 +1,4 @@
-# class Meal < ActiveRecord::Base
+class Meal < ActiveRecord::Base
 
-#     has_many :foods
-# end
+    has_many :foods
+end
